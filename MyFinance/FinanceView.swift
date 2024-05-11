@@ -1,64 +1,178 @@
 import SwiftUI
 import Combine
 
-struct FinanceView: View {
-    var viewModel: FinanceViewModel
-    @State var capitalResStr: String = ""
-    @State var interateRate: String = ""
-    @State var lastStr: String = ""
+//struct FinanceView: View {
+//    var viewModel: FinanceViewModel
+//    @State var capitalResStr: String = ""
+//    @State var interateRate: String = ""
+//    @State var lastStr: String = ""
+//
+//    @State private var sliderValue: Double = 50
+//    @ObservedObject var router = Router()
+//
+//    var body: some View {
+//        NavigationView {
+//            ScrollView {
+//                VStack {
+//                    TextField("Amount of money", text: $capitalResStr)
+//                        .padding()
+//                        .background(Color.white)
+//                        .cornerRadius(3.0)
+//                        .shadow(radius: 10)
+//                        .keyboardType(.numberPad)
+//                        .onReceive(Just(capitalResStr), perform: { newValue in
+//                            capitalResStr = newValue.formatAmount()
+//                        })
+//
+//
+//                    TextField("Last", text: $lastStr)
+//                        .padding()
+//                        .background(Color.white)
+//                        .cornerRadius(3.0)
+//                        .shadow(radius: 10)
+//                        .keyboardType(.numberPad)
+//
+//                    TextField("Interest Rate", text: $interateRate)
+//                        .padding()
+//                        .background(Color.white)
+//                        .cornerRadius(3.0)
+//                        .shadow(radius: 10)
+//                        .keyboardType(.numberPad)
+//                        .onChange(of: interateRate) { newValue in
+//                            // Perform any necessary logic here when interateRate changes
+//                        }
+//                    HStack {
+//                        Text("Revenue: \(viewModel.result)")
+//                        Spacer()
+//                    }
+//                }
+//                .padding()
+//                .onChange(of: interateRate) { newValue in
+//                    viewModel.performCaculateInterestRate(
+//                        amount: capitalResStr,
+//                        interest: interateRate,
+//                        last: lastStr
+//                    )
+//                }
+//            }
+//            .navigationBarTitle("My Finance", displayMode: .large)
+//        }
+//    }
+//}
 
-    @State private var sliderValue: Double = 50
+// Our observable object class
+class GameSettings: ObservableObject {
+    @Published var score = 0
+}
+
+// A view that expects to find a GameSettings object
+// in the environment, and shows its score.
+struct ScoreView: View {
+    @EnvironmentObject var settings: GameSettings
 
     var body: some View {
-        NavigationView {
-            ScrollView {
-                VStack {
-                    TextField("Amount of money", text: $capitalResStr)
-                        .padding()
-                        .background(Color.white)
-                        .cornerRadius(3.0)
-                        .shadow(radius: 10)
-                        .keyboardType(.numberPad)
-                        .onReceive(Just(capitalResStr), perform: { newValue in
-                            capitalResStr = newValue.formatAmount()
-                        })
+        Text("Score: \(settings.score)")
+    }
+}
 
+// A view that creates the GameSettings object,
+// and places it into the environment for the
+// navigation stack.
+struct ContentView: View {
+    @StateObject var settings = GameSettings()
 
-                    TextField("Last", text: $lastStr)
-                        .padding()
-                        .background(Color.white)
-                        .cornerRadius(3.0)
-                        .shadow(radius: 10)
-                        .keyboardType(.numberPad)
-
-                    TextField("Interest Rate", text: $interateRate)
-                        .padding()
-                        .background(Color.white)
-                        .cornerRadius(3.0)
-                        .shadow(radius: 10)
-                        .keyboardType(.numberPad)
-                        .onChange(of: interateRate) { newValue in
-                            // Perform any necessary logic here when interateRate changes
-                        }
-
-                    Text(viewModel.result)
+    var body: some View {
+        NavigationStack {
+            VStack {
+                // A button that writes to the environment settings
+                Button("Increase Score") {
+                    settings.score += 1
                 }
-                .padding()
-                .onChange(of: interateRate) { newValue in
-                    viewModel.performCaculateInterestRate(
-                        amount: capitalResStr,
-                        interest: interateRate,
-                        last: lastStr
-                    )
+
+//                NavigationLink {
+                    ScoreView()
+//                } label: {
+//                    Text("Show Detail View")
+//                }
+            }
+            .frame(height: 200)
+        }
+        .environmentObject(settings)
+    }
+}
+//struct ContentView: View {
+//    @ObservedObject var router = Router()
+//
+//    var body: some View {
+//        NavigationStack(path: $router.navPath) {
+//            VStack {
+//                Text("Main View")
+//                NavigationLink(destination: FirstView()) {
+//                    Text("Go to First View")
+//                }
+//            }
+//        }
+//    }
+//}
+
+//struct FinanceView_Previews: PreviewProvider {
+//    static var previews: some View {
+////        FinanceView(viewModel: FinanceViewModel(result: ""))
+//    }
+//}
+
+
+struct FirstView: View {
+    @ObservedObject var router = Router()
+
+    var body: some View {
+        NavigationStack(path: $router.navPath) {
+            VStack {
+                Text("First View")
+                NavigationLink(destination: SecondView()) {
+                    Text("Go to Second View")
                 }
             }
-            .navigationBarTitle("My Finance", displayMode: .large)
         }
     }
 }
 
-struct FinanceView_Previews: PreviewProvider {
-    static var previews: some View {
-        FinanceView(viewModel: FinanceViewModel(result: ""))
+struct SecondView: View {
+    var body: some View {
+        VStack {
+            Text("Second View")
+        }
+    }
+}
+
+
+public class AnyIdentifiable: Identifiable {
+    public let destination: any Identifiable
+
+    public init(destination: any Identifiable) {
+        self.destination = destination
+    }
+}
+
+public final class Router: ObservableObject {
+    @Published public var navPath = NavigationPath()
+    @Published public var presentedSheet: AnyIdentifiable?
+
+    public init() {}
+
+    public func presentSheet(destination: any Identifiable) {
+        presentedSheet = AnyIdentifiable(destination: destination)
+    }
+
+    public func navigate(to destination: any Hashable) {
+        navPath.append(destination)
+    }
+
+    public func navigateBack() {
+        navPath.removeLast()
+    }
+
+    public func navigateToRoot() {
+        navPath.removeLast(navPath.count)
     }
 }

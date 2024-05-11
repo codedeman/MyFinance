@@ -11,7 +11,8 @@ import SwiftUI
 struct MyFinanceApp: App {
     var body: some Scene {
         WindowGroup {
-            FinanceView(viewModel: .init(result: ""))
+//            FinanceView(viewModel: .init(result: ""))
+            ContentView()
         }
     }
 }

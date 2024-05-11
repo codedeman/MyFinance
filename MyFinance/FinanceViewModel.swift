@@ -7,43 +7,46 @@
 
 import Foundation
 import Combine
-@MainActor
 
 final class FinanceViewModel: ObservableObject {
+
     //MARK: Variable
     @Published var result: String = ""
     @Published var percentageStr: String = ""
 
-    init(result: String) {
-        self.result = result
-    }
 
-    public func performCaculateInterestRate(
+    func calculateInterestAmount(
         amount: String,
-        interest: String,
-        last: String
+        interestRate: String,
+        duration: String
     ) {
-        let amountDouble = Double(amount)
-        guard let amountValue = Double(amount.replacingOccurrences(of: ",", with: "")), // Convert amount to Double
-              let interestRate = Double(interest), // Convert interest rate to Double
-              let lastValue = Double(last) // Convert last value to Double
-        else {
-            print("Invalid input. Please enter numeric values.")
+        let formatter = NumberFormatter()
+        formatter.locale = Locale(identifier: "de_DE") // Adjust locale if necessary
+        guard let amountValue = formatter.number(from: amount.replacingOccurrences(of: ",", with: ""))?.doubleValue,
+              let interestRateValue = Double(interestRate),
+              let durationValue = Double(duration),
+              amountValue >= 0, interestRateValue >= 0, durationValue > 0 else {
+            // Handle invalid input (e.g., throw an error or return an error code)
             return
         }
 
         // Calculate interest
-        let interestAmount = amountValue * interestRate * lastValue
-        result = "Result" + "\(interestAmount)".formatAmount()
+        let interestAmount = amountValue * (interestRateValue / 100) * durationValue
+
+        // Format the result
+        let formattedResult: String
+        if interestAmount.truncatingRemainder(dividingBy: 1) == 0 {
+            formattedResult = String(format: "%.0f", interestAmount)
+        } else {
+
+            formattedResult = String(format: "%.2f", interestAmount)
+        }
+
+        result = formattedResult.formatAmount()
     }
 
-    public func getPercentage(percentStr: String) {
-        let percent = Double(percentStr) ?? 0.0
-        let percentage = percent*100
-        let rounderNum = Int(percentage)
-        percentageStr = "Percentage \(rounderNum)%"
-    }
 
-    
+
+
 
 }
