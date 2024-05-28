@@ -25,8 +25,7 @@ jobs:
       with:
         xcode-version: latest
 
-    - name: Resolve Swift Package Dependencies
-      run: swift package resolve
+
 
     - name: Build and test for iOS
       run: |
