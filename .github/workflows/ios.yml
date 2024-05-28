@@ -25,12 +25,13 @@ jobs:
       with:
         xcode-version: latest
 
+    - name: Resolve Swift Package Dependencies
+      run: swift package resolve
 
-    - name: Build and test
+    - name: Build and test for iOS
       run: |
         xcodebuild clean build test \
           -project ${{ env.XCODE_PROJECT }} \
           -scheme ${{ env.XCODE_SCHEME }} \
           -destination 'platform=iOS Simulator,name=iPhone 12,OS=latest' \
           -enableCodeCoverage YES | xcpretty
-
