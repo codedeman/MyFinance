@@ -25,16 +25,11 @@ jobs:
       with:
         xcode-version: latest
 
-# xcodebuild clean build test \
-#   -project MyFinance.xcodeproj \
-#   -scheme MyFinance \
-#   -destination 'platform=iOS Simulator,name=iPhone 12,OS=latest' \
-#   -enableCodeCoverage YES | xcpretty
-
-    - name: Build and test for iOS
-      run: |
-        xcodebuild clean build test \
-          -project MyFinance.xcodeproj \
-          -scheme MyFinance \
-          -destination 'platform=iOS Simulator,name=iPhone 12,OS=latest' \
-          -enableCodeCoverage YES | xcpretty
+   - name: Build and test for iOS
+        run: |
+          xcodebuild clean build test \
+            -project ${{ env.XCODE_PROJECT }} \
+            -scheme ${{ env.XCODE_SCHEME }} \
+            -destination 'platform=iOS Simulator,name=iPhone 12,OS=latest' \
+            -only-testing:MyFinanceTests \
+            -enableCodeCoverage YES | xcpretty
