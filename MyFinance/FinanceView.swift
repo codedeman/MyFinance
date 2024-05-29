@@ -78,8 +78,10 @@ struct ScoreView: View {
 // A view that creates the GameSettings object,
 // and places it into the environment for the
 // navigation stack.
+
 struct ContentView: View {
     @StateObject var settings = GameSettings()
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
 
     var body: some View {
         NavigationStack {
