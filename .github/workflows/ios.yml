@@ -30,6 +30,6 @@ jobs:
           xcodebuild clean build test \
             -project ${{ env.XCODE_PROJECT }} \
             -scheme ${{ env.XCODE_SCHEME }} \
-            -destination 'platform=iOS Simulator,name=iPhone 12,OS=latest' \
+            -destination 'platform=iOS Simulator,name=iPhone 15,OS=latest' \
             -only-testing:MyFinanceTests \
             -enableCodeCoverage YES | xcpretty
