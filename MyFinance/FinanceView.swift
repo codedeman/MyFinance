@@ -54,6 +54,10 @@ struct FinanceView: View {
                         Text("Revenue: \(viewModel.result)")
                         Spacer()
                     }
+                    
+                    NavigationLink(destination: SecondView()) {
+                        Text("Confirm")
+                    }
                 }
                 .padding()
                 .onChange(of: interateRate) { newValue in

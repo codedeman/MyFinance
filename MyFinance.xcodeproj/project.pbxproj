@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0A656BDF2BC6D8B4009FF453 /* ChartLib in Frameworks */ = {isa = PBXBuildFile; productRef = 0A656BDE2BC6D8B4009FF453 /* ChartLib */; };
 		0AC800D12BB017AE00F9950A /* MyFinanceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC800D02BB017AE00F9950A /* MyFinanceApp.swift */; };
 		0AC800D32BB017AE00F9950A /* FinanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC800D22BB017AE00F9950A /* FinanceView.swift */; };
 		0AC800D52BB017AF00F9950A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0AC800D42BB017AF00F9950A /* Assets.xcassets */; };
@@ -72,7 +71,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0A656BDF2BC6D8B4009FF453 /* ChartLib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -200,7 +198,6 @@
 			);
 			name = MyFinanceUITests;
 			packageProductDependencies = (
-				0A656BDE2BC6D8B4009FF453 /* ChartLib */,
 			);
 			productName = MyFinanceUITests;
 			productReference = 0AC800E82BB017AF00F9950A /* MyFinanceUITests.xctest */;
@@ -622,13 +619,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		0A656BDE2BC6D8B4009FF453 /* ChartLib */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = ChartLib;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0AC800C52BB017AE00F9950A /* Project object */;
 }
