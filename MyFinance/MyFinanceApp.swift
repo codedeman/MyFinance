@@ -9,10 +9,13 @@ import SwiftUI
 
 @main
 struct MyFinanceApp: App {
+    private var viewModel = FinanceViewModel()
+    @StateObject var themeMode = Theme(primaryColor: .red)
     var body: some Scene {
         WindowGroup {
-//            FinanceView(viewModel: .init(result: ""))
-            ContentView()
+            FinanceView()
+                .environmentObject(viewModel)
+                .environmentObject(themeMode)
         }
     }
 }

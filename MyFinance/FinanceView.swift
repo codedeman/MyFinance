@@ -1,64 +1,74 @@
 import SwiftUI
 import Combine
 
-//struct FinanceView: View {
-//    var viewModel: FinanceViewModel
-//    @State var capitalResStr: String = ""
-//    @State var interateRate: String = ""
-//    @State var lastStr: String = ""
-//
-//    @State private var sliderValue: Double = 50
-//    @ObservedObject var router = Router()
-//
-//    var body: some View {
-//        NavigationView {
-//            ScrollView {
-//                VStack {
-//                    TextField("Amount of money", text: $capitalResStr)
-//                        .padding()
-//                        .background(Color.white)
-//                        .cornerRadius(3.0)
-//                        .shadow(radius: 10)
-//                        .keyboardType(.numberPad)
-//                        .onReceive(Just(capitalResStr), perform: { newValue in
-//                            capitalResStr = newValue.formatAmount()
-//                        })
-//
-//
-//                    TextField("Last", text: $lastStr)
-//                        .padding()
-//                        .background(Color.white)
-//                        .cornerRadius(3.0)
-//                        .shadow(radius: 10)
-//                        .keyboardType(.numberPad)
-//
-//                    TextField("Interest Rate", text: $interateRate)
-//                        .padding()
-//                        .background(Color.white)
-//                        .cornerRadius(3.0)
-//                        .shadow(radius: 10)
-//                        .keyboardType(.numberPad)
-//                        .onChange(of: interateRate) { newValue in
-//                            // Perform any necessary logic here when interateRate changes
-//                        }
-//                    HStack {
-//                        Text("Revenue: \(viewModel.result)")
-//                        Spacer()
-//                    }
-//                }
-//                .padding()
-//                .onChange(of: interateRate) { newValue in
-//                    viewModel.performCaculateInterestRate(
-//                        amount: capitalResStr,
-//                        interest: interateRate,
-//                        last: lastStr
-//                    )
-//                }
-//            }
-//            .navigationBarTitle("My Finance", displayMode: .large)
-//        }
-//    }
-//}
+final class Theme: ObservableObject {
+    @Published var primaryColor: Color = .orange
+    init(primaryColor: Color) {
+        self.primaryColor = primaryColor
+    }
+    
+}
+
+struct FinanceView: View {
+
+    @EnvironmentObject var viewModel: FinanceViewModel
+    @EnvironmentObject var theme: Theme
+    @State var capitalResStr: String = ""
+    @State var interateRate: String = ""
+    @State var lastStr: String = ""
+
+    @State private var sliderValue: Double = 50
+    @ObservedObject var router = Router()
+
+    var body: some View {
+        NavigationView {
+            ScrollView {
+                VStack {
+                    TextField("Amount of money", text: $capitalResStr)
+                        .padding()
+                        .background(Color.white)
+                        .cornerRadius(3.0)
+                        .shadow(radius: 10)
+                        .keyboardType(.numberPad)
+                        .onReceive(Just(capitalResStr), perform: { newValue in
+                            capitalResStr = newValue.formatAmount()
+                        })
+
+
+                    TextField("Last", text: $lastStr)
+                        .padding()
+                        .background(Color.white)
+                        .cornerRadius(3.0)
+                        .shadow(radius: 10)
+                        .keyboardType(.numberPad)
+
+                    TextField("Interest Rate", text: $interateRate)
+                        .padding()
+                        .background(Color.white)
+                        .cornerRadius(3.0)
+                        .shadow(radius: 10)
+                        .keyboardType(.numberPad)
+                        .onChange(of: interateRate) { newValue in
+                            // Perform any necessary logic here when interateRate changes
+                        }
+                    HStack {
+                        Text("Revenue: \(viewModel.result)")
+                        Spacer()
+                    }
+                }
+                .padding()
+                .onChange(of: interateRate) { newValue in
+                    viewModel.calculateInterestAmount(
+                        amount: capitalResStr,
+                        interestRate: interateRate,
+                        duration: lastStr
+                    )
+                }
+            }
+            .navigationBarTitle("My Finance", displayMode: .large)
+        }.background(theme.primaryColor)
+    }
+}
 
 // Our observable object class
 class GameSettings: ObservableObject {
