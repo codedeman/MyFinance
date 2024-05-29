@@ -6,7 +6,6 @@ final class Theme: ObservableObject {
     init(primaryColor: Color) {
         self.primaryColor = primaryColor
     }
-    
 }
 
 struct FinanceView: View {
@@ -64,10 +63,11 @@ struct FinanceView: View {
                         duration: lastStr
                     )
                 }
-            }
+            }.background(theme.primaryColor)
             .navigationBarTitle("My Finance", displayMode: .large)
-        }.background(theme.primaryColor)
+        }
     }
+
 }
 
 // Our observable object class

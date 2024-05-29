@@ -14,7 +14,6 @@ final class FinanceViewModel: ObservableObject {
     @Published var result: String = ""
     @Published var percentageStr: String = ""
 
-
     func calculateInterestAmount(
         amount: String,
         interestRate: String,
